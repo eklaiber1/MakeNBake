@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sofforce.makenbake.Activities.HomeScreenList"
+    >
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_homeScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorAccent"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/fragment_recipe_card">
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/the_first_frag"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="160dp"-->
+            <!--android:background="@color/keylime"-->
+            <!--android:padding="5dp"-->
+            <!--android:scaleType="centerInside"/>-->
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/the_second_frag"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="160dp"-->
+            <!--android:background="@color/keylime"-->
+            <!--android:padding="5dp"-->
+            <!--android:scaleType="centerInside"/>-->
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/the_third_frag"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="160dp"-->
+            <!--android:background="@color/keylime"-->
+            <!--android:padding="5dp"-->
+            <!--android:scaleType="centerInside"/>-->
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/the_fourth_frag"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="160dp"-->
+            <!--android:background="@color/keylime"-->
+            <!--android:padding="5dp"-->
+            <!--android:scaleType="centerInside"/>-->
+
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

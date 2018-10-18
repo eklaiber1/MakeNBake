@@ -1,4 +1,4 @@
-package com.sofforce.makenbake;
+package com.sofforce.makenbake.Utilities;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

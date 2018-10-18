@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.sofforce.makenbake"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -15,31 +15,46 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            buildConfigField 'String', 'BASE_URL', '"https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json"'
+        }
+
+        release {
+            buildConfigField 'String', 'BASE_URL', '"https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json"'
+        }
+    }
+    buildToolsVersion '28.0.2'
+    productFlavors {
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-    //retrofit and gson
+    // gson
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-
-
-
+    // volley
+    implementation 'com.android.volley:volley:1.1.1'
+    //the recycleViewer and cardView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
-
+    implementation 'com.android.support:design:27.1.1'
+    //picasso for the images
+    implementation 'com.squareup.picasso:picasso:2.71828'
     //this is used for the binding of the views
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
-
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    //this is the media exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.8.1'
+    //this is all the automated database for the application
+    implementation 'android.arch.persistence.room:runtime:1.1.0'
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.0"
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 }

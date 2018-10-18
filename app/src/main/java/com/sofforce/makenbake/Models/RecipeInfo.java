@@ -1,12 +1,14 @@
 package com.sofforce.makenbake.Models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.sofforce.makenbake.database.IngredientsConvertor;
+import com.sofforce.makenbake.database.StepsConvertor;
 
-import java.io.Serializable;
 import java.util.List;
 
 
@@ -14,90 +16,38 @@ import java.util.List;
  * this class is going to be the MVC model  for the json to parse.
  * All the quantity, measures, and ingredients will go here
  * */
+@Entity(tableName = "recipes")
+public class RecipeInfo  {
 
-public class RecipeInfo implements Serializable, Parcelable {
-
-    @SerializedName("id")
-    @Expose
-    private long id;
-    @SerializedName("name")
-    @Expose
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private int uid;
+    private String id;
     private String name;
-    @SerializedName("ingredients")
-    @Expose
-    private List<Ingredients> ingredients = null;
-    @SerializedName("steps")
-    @Expose
-    private List<StepsToTake> steps = null;
-    @SerializedName("servings")
-    @Expose
-    private long servings;
-    @SerializedName("image")
-    @Expose
-    private String image;
-    public final static Parcelable.Creator<RecipeInfo> CREATOR = new Creator<RecipeInfo>() {
+    private String servings;
 
+    @ColumnInfo(name = "ingredients")
+    @TypeConverters(IngredientsConvertor.class)
+    private List<Ingredients> ingredients;
 
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public RecipeInfo createFromParcel(Parcel in) {
-            return new RecipeInfo(in);
-        }
+    @ColumnInfo(name = "steps")
+    @TypeConverters(StepsConvertor.class)
+    private List<StepsToTake> steps;
 
-        public RecipeInfo[] newArray(int size) {
-            return (new RecipeInfo[size]);
-        }
-
-    };
-
-    private final static long serialVersionUID = -4496692576621736715L;
-
-    protected RecipeInfo(Parcel in) {
-        this.id = ((long) in.readValue((long.class.getClassLoader())));
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.ingredients, (Ingredients.class.getClassLoader()));
-        in.readList(this.steps, (StepsToTake.class.getClassLoader()));
-        this.servings = ((long) in.readValue((long.class.getClassLoader())));
-        this.image = ((String) in.readValue((String.class.getClassLoader())));
+    @NonNull
+    public int getUid() {
+        return uid;
     }
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public RecipeInfo() {
+    public void setUid(@NonNull int uid) {
+        this.uid = uid;
     }
 
-    /**
-     *
-     * @param ingredients
-     * @param id
-     * @param servings
-     * @param name
-     * @param image
-     * @param steps
-     */
-    public RecipeInfo(long id,
-                      String name,
-                      List<Ingredients> ingredients,
-                      List<StepsToTake> steps,
-                      long servings,
-                      String image) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.ingredients = ingredients;
-        this.steps = steps;
-        this.servings = servings;
-        this.image = image;
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -125,34 +75,15 @@ public class RecipeInfo implements Serializable, Parcelable {
         this.steps = steps;
     }
 
-    public long getServings() {
+
+    public String getServings() {
         return servings;
     }
 
-    public void setServings(long servings) {
+    public void setServings(String servings) {
         this.servings = servings;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(name);
-        dest.writeList(ingredients);
-        dest.writeList(steps);
-        dest.writeValue(servings);
-        dest.writeValue(image);
-    }
-
-    public int describeContents() {
-        return 0;
-    }
 
 
 

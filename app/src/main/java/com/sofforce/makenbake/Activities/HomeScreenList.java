@@ -1,24 +1,40 @@
 package com.sofforce.makenbake.Activities;
 
+import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.sofforce.makenbake.Adapters.MainRecipeAdapter;
-import com.sofforce.makenbake.All_interfaces.ClientBase;
-import com.sofforce.makenbake.All_interfaces.Service_Api;
-import com.sofforce.makenbake.ConnectionDetector;
+import com.sofforce.makenbake.All_interfaces.ActivityClickListener;
+import com.sofforce.makenbake.BuildConfig;
+import com.sofforce.makenbake.Models.AllRecipesListModel;
 import com.sofforce.makenbake.Models.RecipeInfo;
 import com.sofforce.makenbake.R;
+import com.sofforce.makenbake.Utilities.ConnectionDetector;
+import com.sofforce.makenbake.Utilities.MyInstanceLifetime;
+import com.sofforce.makenbake.database.ApplicationDb;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,58 +42,61 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 
 /*
 *
-* this is my new baking app
+* this is launching activity for the application
 * */
 
-public class HomeScreenList extends AppCompatActivity {
+public class HomeScreenList extends AppCompatActivity implements ActivityClickListener {
 
-
-    @BindView(R.id.main_homeScreen )
+    //these are all the global variables for this class
+    @BindView(R.id.items_in_recycler )
     RecyclerView recipeRecycler;
+    @BindView( R.id.textView )
+    TextView textView;
 
+    private Context mContext;
+    private ProgressDialog progressDialog;
+    private MyInstanceLifetime myInstanceLifetime;
+    private ApplicationDb applicationDb;
 
-    private MainRecipeAdapter adapter;
+    //initializing the recipelist
     private List<RecipeInfo> recipeList;
 
     //this is the log variable for the activity lifecycle
-    private static final String ACTIVITY = "ACTIVITY_LIFECYCLE";
+    private static final String ACTIVITY_ON_CREATE = "ACTIVITY_OnCreate";
+    private static final String ACTIVITY_LOADGSON = "ACTIVITY_loadGson";
+    private static final String ACTIVITY_SHOWLIVELIST = "ACTIVITY_showLiveList";
+    private static final String ACTIVITY_ACTIVATELIST = "ACTIVITY_activateList";
+    private static final String ACTIVITY_ONCHANGED = "ACTIVITY_onChanged";
+    private static final String ACTIVITY_ONITEMCLICK = "ACTIVITY_onItemClicked";
+
 
     //this is to check whether there is  a connection to the internet
     ConnectionDetector cd =  new ConnectionDetector(this);
 
 
-
+    //the oncreate method is executed when the activity is launched,
+    // everything in this method gets created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d( ACTIVITY,  "onCreate: in" );
+        Log.d( ACTIVITY_ON_CREATE,  "onCreate: in" );
 
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_home_screen );
+        setContentView( R.layout.activity_main_homescreen);
         ButterKnife.bind( this );
+        mContext = this;
+        myInstanceLifetime = MyInstanceLifetime.getAppInstance();
+        applicationDb = ApplicationDb.getInstance( mContext );
 
-        //intializing the recyclerview and the id that goes with it
-        recipeRecycler.setHasFixedSize( true );
-        recipeRecycler.setLayoutManager( new LinearLayoutManager( this ) );
-
-        //intializing the recipelist
-        recipeList = new ArrayList<>(  );
-
-        //intializing the adapter and the setting it to the recipeRecycler
-        adapter = new MainRecipeAdapter( this, recipeList );
-       //recipeRecycler.setAdapter( adapter );
+//      Typeface typeface = Typeface.createFromAsset(getAssets(), "font/unkempt.xml");
+        textView.setText( R.string.pick_a_choice );
 
 
-
-
-        //the check for the internet connection
+        //the check for the internet connetion
         if (cd.isConnected()) {
             Toast.makeText(HomeScreenList.this, "Pick a recipe of your choice", Toast.LENGTH_SHORT).show();
         } else {
@@ -85,69 +104,118 @@ public class HomeScreenList extends AppCompatActivity {
 
         }
 
+        int widthRatio = 2;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            widthRatio = 3;
+        }
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, widthRatio);
+        recipeRecycler.setLayoutManager(gridLayoutManager);
+
+
+
+        showLiveList();
         loadGson();
 
 
-
-        Log.d( ACTIVITY,  "onCreate: out" );
+        Log.d( ACTIVITY_ON_CREATE,  "onCreate: out" );
 
     }
 
 
-
-
+    //this is where  you retrieve the data from the URL and save it in the application instance
     private void loadGson() {
+        Log.d( ACTIVITY_LOADGSON,  "loadGson: in" );
 
-        Service_Api service_api = ClientBase.getService();
-        Call<JsonArray> loadRecipeCall = service_api.getRecipeList();
 
-        loadRecipeCall.enqueue(new Callback<JsonArray>() {
-
+        StringRequest stingRequest = new StringRequest( Request.Method.GET, BuildConfig.BASE_URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+            public void onResponse(String response) {
 
                 try{
+                    JSONArray recipeData =  new JSONArray( response );
+                    applicationDb.recipeExtract().deleteAll();
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<RecipeInfo>>() {}.getType();
+                    recipeList =  gson.fromJson( recipeData.toString(), listType );
+                    applicationDb.recipeExtract().insertAll(recipeList);
+                    activateList();
 
-                    String recipeString =  response.body().toString();
 
-                    Type listOfRecipes = new TypeToken<List<RecipeInfo>>() {}.getType();
-                    recipeList = getRecipeListFromJson( recipeString, listOfRecipes );
-
-                    recipeRecycler.setItemAnimator( new DefaultItemAnimator() );
-                    recipeRecycler.setAdapter( adapter );
-
-
-                } catch (Exception e ) {
-                    Log.d( "OnResponse", "there is an error" );
+                } catch (JSONException e ) {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, getString(R.string.error), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
+
             }
-
+        }, new Response.ErrorListener() {
             @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-
-                Toast.makeText( HomeScreenList.this, "ERROR Ocurred", Toast.LENGTH_SHORT ).show();
+            public void onErrorResponse(VolleyError error) {
 
             }
         } );
 
+        myInstanceLifetime.addToRequestQueue( stingRequest );
+        Log.d( ACTIVITY_LOADGSON,  "loadGson: out" );
+
     }
 
-    public static <T> List<T> getRecipeListFromJson(String jsonString, Type type) {
-        if (!isValid(jsonString)){
-            return null;
-        }
-        return new Gson().fromJson( jsonString, type );
+
+    //this is where you pass the data to the recylcerview and show the list in the view
+    private void showLiveList() {
+        Log.d( ACTIVITY_SHOWLIVELIST,  "showLiveList: in" );
+
+        AllRecipesListModel model = ViewModelProviders.of((FragmentActivity) mContext).get(AllRecipesListModel.class);
+        model.getListLiveData().observe(HomeScreenList.this, observer);
+
+        Log.d( ACTIVITY_SHOWLIVELIST,  "showLiveList: out" );
     }
 
-    public static boolean isValid(String json) {
 
-        try{
-            new JsonParser().parse(json);
-            return true;
+    //all the content that was retrieved in the loadGson method is
+    // passed to this method so that the adapter can parse it
+    private void activateList() {
+
+        Log.d( ACTIVITY_ACTIVATELIST,  "activate_List: in" );
+
+        if (recipeList.size() != 0) {
+            MainRecipeAdapter adapter = new MainRecipeAdapter(mContext, recipeList);
+            recipeRecycler.setAdapter(adapter);
         }
-        catch (JsonSyntaxException jse) {
-            return false;
+        Log.d( ACTIVITY_ACTIVATELIST,  "activate_List: out" );
+
+    }
+
+
+    //this method passes the entire list to the array that them passed it to the activity list
+    final Observer<List<RecipeInfo>> observer = new Observer<List<RecipeInfo>>() {
+
+        @Override
+        public void onChanged(@Nullable List<RecipeInfo> list) {
+            Log.d( ACTIVITY_ONCHANGED,  "activate_onChanged: in" );
+
+            if (list.size()>0) {
+                recipeList = new ArrayList<>();
+                recipeList.addAll(list);
+                activateList();
+            }
+            Log.d( ACTIVITY_ONCHANGED,  "activate_onChanged: out" );
+
         }
+    };
+
+    //this method is activated whenever the user clicks on the recipe card it takes them to the
+    // next activity which shows all the details for the recipe that was clicked
+    @Override
+    public void onItemClick(int pos, ImageView imageView) {
+        Log.d( ACTIVITY_ONITEMCLICK,  "activate_onItemClick: in" );
+
+
+        myInstanceLifetime.setRecipesModel( recipeList.get( pos ) );
+        Intent intent = new Intent( mContext, IngredientsAndSteps.class );
+        startActivity(intent);
+        Log.d( ACTIVITY_ONITEMCLICK,  "activate_onItemClick: out" );
+
     }
 
 

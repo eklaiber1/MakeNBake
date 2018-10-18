@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".DetailLists.IngredientsList">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/ingredient_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
+    android:fillViewport="true">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/colorPrimaryDark"
+            tools:context=".Activities.IngredientsAndSteps">
 
 
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/keylime"
+                    app:titleTextColor="@color/colorPrimaryDark"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-</RelativeLayout>
+                <include layout="@layout/items_in_list"/>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

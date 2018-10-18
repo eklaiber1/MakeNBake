@@ -1,90 +1,17 @@
 package com.sofforce.makenbake.Models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.text.TextUtils;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-
-public class StepsToTake implements Serializable, Parcelable {
+public class StepsToTake  {
 
 
-    @SerializedName("id")
-    @Expose
-    private long id;
-    @SerializedName("shortDescription")
-    @Expose
-    private String shortDescription;
-    @SerializedName("description")
-    @Expose
-    private String description;
-    @SerializedName("videoURL")
-    @Expose
-    private String videoURL;
-    @SerializedName("thumbnailURL")
-    @Expose
-    private String thumbnailURL;
-    public final static Parcelable.Creator<StepsToTake> CREATOR = new Creator<StepsToTake>() {
+    private String id, shortDescription, description, videoURL, thumbnailURL;
 
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public StepsToTake createFromParcel(Parcel in) {
-            return new StepsToTake(in);
-        }
-
-        public StepsToTake[] newArray(int size) {
-            return (new StepsToTake[size]);
-        }
-
-    };
-
-    private final static long serialVersionUID = 8466834696165467452L;
-
-     protected StepsToTake(Parcel in) {
-        this.id = ((long) in.readValue((long.class.getClassLoader())));
-        this.shortDescription = ((String) in.readValue((String.class.getClassLoader())));
-        this.description = ((String) in.readValue((String.class.getClassLoader())));
-        this.videoURL = ((String) in.readValue((String.class.getClassLoader())));
-        this.thumbnailURL = ((String) in.readValue((String.class.getClassLoader())));
-    }
-
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public StepsToTake() {
-    }
-
-    /**
-     *
-     * @param id
-     * @param shortDescription
-     * @param description
-     * @param videoURL
-     * @param thumbnailURL
-     */
-    public StepsToTake(long id,
-                       String shortDescription,
-                       String description,
-                       String videoURL,
-                       String thumbnailURL) {
-        super();
-        this.id = id;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.videoURL = videoURL;
-        this.thumbnailURL = thumbnailURL;
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -105,6 +32,8 @@ public class StepsToTake implements Serializable, Parcelable {
     }
 
     public String getVideoURL() {
+        if (TextUtils.isEmpty(videoURL))
+            return "not available";
         return videoURL;
     }
 
@@ -113,6 +42,8 @@ public class StepsToTake implements Serializable, Parcelable {
     }
 
     public String getThumbnailURL() {
+        if (TextUtils.isEmpty(thumbnailURL))
+            return "not available";
         return thumbnailURL;
     }
 
@@ -120,17 +51,7 @@ public class StepsToTake implements Serializable, Parcelable {
         this.thumbnailURL = thumbnailURL;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(shortDescription);
-        dest.writeValue(description);
-        dest.writeValue(videoURL);
-        dest.writeValue(thumbnailURL);
-    }
 
-    public int describeContents() {
-        return 0;
-    }
 
 
 }

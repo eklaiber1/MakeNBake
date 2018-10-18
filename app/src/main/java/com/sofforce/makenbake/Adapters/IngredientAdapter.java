@@ -12,21 +12,24 @@ import com.sofforce.makenbake.R;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
     private List<Ingredients> ingredientsList;
     private Context context;
 
-    public IngredientAdapter(List<Ingredients> ingredientsList, Context context) {
-        this.ingredientsList = ingredientsList;
+    public IngredientAdapter(Context context, List<Ingredients> ingredientsList) {
         this.context = context;
+        this.ingredientsList = ingredientsList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from( parent.getContext() )
-                .inflate( R.layout.detailed_ingredients, parent, false);
+                .inflate( R.layout.the_list_of_ingredients, parent, false);
 
         return new ViewHolder( v );
 
@@ -37,7 +40,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
         Ingredients ingredients = ingredientsList.get( position );
 
-        holder.theQuantity.setText( (int) ingredients.getQuantity());
+        holder.theQuantity.setText( ingredients.getQuantity());
         holder.theMeasure.setText( ingredients.getMeasure() );
         holder.theIngredient.setText( ingredients.getIngredient() );
 
@@ -51,17 +54,18 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public  class ViewHolder extends RecyclerView.ViewHolder {
 
 
-
+        @BindView( R.id.quantity )
         public TextView theQuantity;
+
+        @BindView( R.id.measure )
         public TextView theMeasure;
+
+        @BindView( R.id.ingredients )
         public TextView theIngredient;
 
-        public ViewHolder(View itemView) {
+         ViewHolder(View itemView) {
             super( itemView );
-
-            theQuantity = (TextView) itemView.findViewById( R.id.quantity );
-            theMeasure = (TextView) itemView.findViewById( R.id.measure );
-            theIngredient = (TextView) itemView.findViewById( R.id.ingredients );
+            ButterKnife.bind( this, itemView );
 
         }
     }

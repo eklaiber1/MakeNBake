@@ -2,41 +2,78 @@
 
 <!--these are the frame layouts that are going to be shown on the home screen -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:adjustViewBounds="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:elevation="3dp"
-        android:padding="10dp"
-        app:cardCornerRadius="7dp">
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
 
-                <TextView
-                android:id="@+id/recipe_card_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/unkempt"/>
-
-                <TextView
-                android:id="@+id/recipe_card_servings"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/unkempt"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/individualCards"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/keylime"
+                    android:orientation="vertical">
 
 
+                        <ImageView
+                            android:id="@+id/img_food"
+                            android:layout_width="284dp"
+                            android:layout_height="145dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/the_item_pie"
+                            android:src="@drawable/the_pie"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/recipe_card_name"
+                            android:layout_width="127dp"
+                            android:layout_height="33dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:hint="@string/recipe_name"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/img_food" />
+
+                        <TextView
+                            android:id="@+id/recipe_card_servings"
+                            android:layout_width="127dp"
+                            android:layout_height="33dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:hint="@string/servings"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/recipe_card_name" />
+
+                </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
 </LinearLayout>
+
+

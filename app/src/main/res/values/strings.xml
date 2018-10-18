@@ -12,8 +12,18 @@
     <string name="ingredient">Ingreident:</string>
 
     <!--These are the names for the recipes -->
-    <string name="recipe_number">Recipe Number:</string>
-    <string name="recipe_name">Recipe Name:</string>
-    <string name="Servings">Servings:</string>
-    <string name="image">Image:</string>
+    <string name="error">there is an error fetching the data</string>
+
+    <string name="space">\u0020</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="step">Step</string>
+    <string name="fontPath">fonts/dealers.otf</string>
+    <string name="no_video_found">No video found here</string>
+    <string name="pick_a_choice">Pick a choice</string>
+    <string name="servings">servings</string>
+    <string name="recipe_name">recipe name</string>
+    <string name="the_chef">TODO</string>
+    <string name="home_screen_image">TODO</string>
+    <string name="the_item_pie">the_pie</string>
+
 </resources>

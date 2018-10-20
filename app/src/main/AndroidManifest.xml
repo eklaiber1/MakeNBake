@@ -28,6 +28,15 @@
             android:parentActivityName=".Activities.HomeScreenList">
 
         </activity>
+        <activity
+            android:name=".Activities.VideoAndInstructions"
+            android:parentActivityName=".Activities.IngredientsAndSteps"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="andriod.support.PARENT_ACTIVITY"
+                android:value="com.sofforce.MakeNBake.Activities.IngredientsAndSteps"/>
+
+        </activity>
 
     </application>
 

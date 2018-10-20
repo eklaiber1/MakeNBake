@@ -59,10 +59,10 @@ public class IngredientsAndSteps extends AppCompatActivity implements ActivityCl
 
         context = this;
         recipeInfoClass = MyInstanceLifetime.getAppInstance().getRecipeInfo();
-
-        if (findViewById(R.id.item_detail_container ) != null) {
-            isInTwoPane = true;
-        }
+//
+//        if (findViewById(R.id.item_detail_container ) != null) {
+//            isInTwoPane = true;
+//        }
 
         if (null != recipeInfoClass) {
             setTitle(recipeInfoClass.getName());

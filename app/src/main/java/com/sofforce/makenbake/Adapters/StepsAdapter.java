@@ -115,7 +115,7 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onError(Exception e) {
                     //Thumbnail download of videos and cache it
-                    BitmapAsyncTask.retriveVideoFrameFromVideo(stepsToTakeList.get(pos).getVideoURL(), stepsHolder.img_place_holder);
+                    BitmapAsyncTask.retrieveVideoFrameFromVideo(stepsToTakeList.get(pos).getVideoURL(), stepsHolder.img_place_holder);
                 }
             });
         }
@@ -147,11 +147,6 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
 
-
-
-
-
-
     class IngredientsHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txt_ingredients)
         TextView txt_ingredients;
@@ -179,6 +174,7 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         CardView cardView;
         @BindView(R.id.img_place_holder)
         ImageView img_place_holder;
+
 
 
         StepsHolder(View view) {

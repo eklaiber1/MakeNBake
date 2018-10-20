@@ -96,9 +96,9 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
         textView.setText( R.string.pick_a_choice );
 
 
-        //the check for the internet connetion
+        //the check for the internet connection
         if (cd.isConnected()) {
-            Toast.makeText(HomeScreenList.this, "Pick a recipe of your choice", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeScreenList.this, "Welcome to MakeNBake", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(HomeScreenList.this, "You are not connected", Toast.LENGTH_SHORT).show();
 

@@ -9,7 +9,7 @@
     <!--These are the names for the ingredients -->
     <string name="quantity">Quantity:</string>
     <string name="measure">Measure:</string>
-    <string name="ingredient">Ingreident:</string>
+    <string name="ingredient">Ingredient:</string>
 
     <!--These are the names for the recipes -->
     <string name="error">there is an error fetching the data</string>
@@ -19,11 +19,12 @@
     <string name="step">Step</string>
     <string name="fontPath">fonts/dealers.otf</string>
     <string name="no_video_found">No video found here</string>
-    <string name="pick_a_choice">Pick a choice</string>
+    <string name="pick_a_choice">\"Let me show you how to make a cake ahh haaa\"</string>
     <string name="servings">servings</string>
     <string name="recipe_name">recipe name</string>
     <string name="the_chef">TODO</string>
     <string name="home_screen_image">TODO</string>
     <string name="the_item_pie">the_pie</string>
+    <string name="no_video_mage">TODO</string>
 
 </resources>

@@ -6,10 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/architects_daughter</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColorPrimary">@color/colorPrimary</item>
+    </style>
+
+    <style name="architects_daughter" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/architects_daughter</item>
     </style>
 
 

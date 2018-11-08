@@ -1,6 +1,7 @@
 package com.sofforce.makenbake.Activities;
 
 import android.app.ProgressDialog;
+import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -30,7 +31,9 @@ import com.sofforce.makenbake.Models.AllRecipesListModel;
 import com.sofforce.makenbake.Models.RecipeInfo;
 import com.sofforce.makenbake.R;
 import com.sofforce.makenbake.Utilities.ConnectionDetector;
+import com.sofforce.makenbake.Utilities.ConstantsForApp;
 import com.sofforce.makenbake.Utilities.MyInstanceLifetime;
+import com.sofforce.makenbake.bakingWidget;
 import com.sofforce.makenbake.database.ApplicationDb;
 
 import org.json.JSONArray;
@@ -62,6 +65,8 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
     private ProgressDialog progressDialog;
     private MyInstanceLifetime myInstanceLifetime;
     private ApplicationDb applicationDb;
+    private int mAppWidgetId;
+    private boolean hasContext;
 
     //initializing the recipelist
     private List<RecipeInfo> recipeList;
@@ -79,7 +84,7 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
     ConnectionDetector cd =  new ConnectionDetector(this);
 
 
-    //the oncreate method is executed when the activity is launched,
+    //the onCreate method is executed when the activity is launched,
     // everything in this method gets created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +97,6 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
         myInstanceLifetime = MyInstanceLifetime.getAppInstance();
         applicationDb = ApplicationDb.getInstance( mContext );
 
-//      Typeface typeface = Typeface.createFromAsset(getAssets(), "font/unkempt.xml");
         textView.setText( R.string.pick_a_choice );
 
 
@@ -103,6 +107,17 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
             Toast.makeText(HomeScreenList.this, "You are not connected", Toast.LENGTH_SHORT).show();
 
         }
+
+        if (getIntent() != null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                mAppWidgetId = extras.getInt(
+                        AppWidgetManager.EXTRA_APPWIDGET_ID,
+                        AppWidgetManager.INVALID_APPWIDGET_ID );
+            }
+        }
+
+
 
         int widthRatio = 2;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -210,10 +225,21 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
     public void onItemClick(int pos, ImageView imageView) {
         Log.d( ACTIVITY_ONITEMCLICK,  "activate_onItemClick: in" );
 
+            myInstanceLifetime.setRecipesModel( recipeList.get( pos ) );
+            Intent intent = new Intent( mContext, IngredientsAndSteps.class );
+            startActivity( intent );
 
-        myInstanceLifetime.setRecipesModel( recipeList.get( pos ) );
-        Intent intent = new Intent( mContext, IngredientsAndSteps.class );
-        startActivity(intent);
+            if (intent.getExtras() != null) {
+                myInstanceLifetime.saveRecipeName( mContext, recipeList.get( pos ).getName() );
+                myInstanceLifetime.saveIngredients( mContext, recipeList.get( pos ).getIngredients() );
+                Intent otherIntent = new Intent( mContext, bakingWidget.class );
+                intent.setAction( ConstantsForApp.ACTION_DATA_UPDATE );
+                intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID,
+                        mAppWidgetId );
+                setResult( RESULT_OK, otherIntent );
+                sendBroadcast( otherIntent );
+                ((AppCompatActivity) mContext).finish();
+            }
         Log.d( ACTIVITY_ONITEMCLICK,  "activate_onItemClick: out" );
 
     }

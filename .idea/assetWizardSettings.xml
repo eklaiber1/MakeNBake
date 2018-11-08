@@ -19,8 +19,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$PROJECT_DIR$/../sketch_work/the_bake_pie.png" />
-                                      <entry key="outputName" value="the_bake_pie" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/tableofingred.png" />
+                                      <entry key="outputName" value="table_of_ingredients" />
                                     </map>
                                   </option>
                                 </PersistentState>

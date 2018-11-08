@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#534446</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimary">#001514</color>
+    <color name="colorPrimaryDark">#3D428D</color>
     <color name="colorAccent">#6396A1</color>
-    <color name="keylime">#E9F898</color>
+    <color name="keylime">#FFFAB7</color>
     <color name="white">#FFFFFF</color>
+    <color name="isabelline">#EDEDED</color>
 
 
 </resources>

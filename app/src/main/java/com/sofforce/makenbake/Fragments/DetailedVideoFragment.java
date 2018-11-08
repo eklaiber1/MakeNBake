@@ -70,7 +70,7 @@ public class DetailedVideoFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         onFragmentListener = (OnFragmentListener) context;
-        myInstanceLifetime = MyInstanceLifetime.getAppInstance().getAppInstance();
+        myInstanceLifetime = MyInstanceLifetime.getAppInstance();
     }
 
 
@@ -96,7 +96,7 @@ public class DetailedVideoFragment extends Fragment {
 
         txtTitle.setText(stepsModel.getShortDescription());
         txtDesc.setText(stepsModel.getDescription());
-        mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.madchel01));
+        mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.videocamera01));
 
         if (stepsModel.getThumbnailURL().equals("NA")
                 &&stepsModel.getVideoURL().equals("NA")) {

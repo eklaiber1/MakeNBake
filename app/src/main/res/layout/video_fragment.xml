@@ -38,7 +38,7 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="20dp"
                 android:padding="40dp"
-                android:src="@drawable/madchel01"
+                android:src="@drawable/novideo"
                 android:visibility="gone" />
 
             <TextView

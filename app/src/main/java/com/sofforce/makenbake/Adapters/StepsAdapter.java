@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+/*
+* this steps recyclerview adapter class shows all the steps in the IngredientsAndSteps class
+* */
 public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    //strings for the log.d files
+    final static String ON_CREATE_VIEWHOLDER = "onCreateViewHolder";
+    final static String ON_BIND_VIEWHOLDER =  "onBindViewHolder";
+    final static String GET_ITEM_COUNT = "getItemCount";
 
     private static final int HEADER = 0;
     private static final int ITEM = 1;
@@ -45,8 +55,13 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         theListener = (ActivityClickListener) context;
     }
 
+    /*
+     *this method inflates the layout to the current activity
+     * */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d( ON_CREATE_VIEWHOLDER,  "in" );
+
         if (viewType == HEADER) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.list_food_ingredients, parent, false);
@@ -56,12 +71,19 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     .inflate(R.layout.list_food_steps, parent, false);
             return new StepsHolder(view);
         }
+        Log.d( ON_CREATE_VIEWHOLDER,  "out" );
+
         return null;
     }
 
+    /*
+     *this method connects the views to the data that is passed in to it
+     * */
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        // show first video by default
+
+        Log.d( ON_BIND_VIEWHOLDER,  "in" );
+
         if (position == 0 && stepsToTakeList.size() > 0 && isIn2Pane)
             theListener.onItemClick(position, null);
 
@@ -103,15 +125,12 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             });
 
 
-            //this section you will have to make a placeholder image  for this to work
-            Picasso.get().load(stepsToTakeList.get(pos).getThumbnailURL()).placeholder(R.drawable.madchel01)
-                    .error(R.drawable.madchel01).into(stepsHolder.img_place_holder, new Callback() {
+            Picasso.get().load(stepsToTakeList.get(pos).getThumbnailURL()).placeholder(R.drawable.videocamera01)
+                    .error(R.drawable.videocamera01).into(stepsHolder.img_place_holder, new Callback() {
                 @Override
                 public void onSuccess() {
                 }
 
-
-                //you will have ot make that class bitmap.... and that
                 @Override
                 public void onError(Exception e) {
                     //Thumbnail download of videos and cache it
@@ -120,11 +139,19 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             });
         }
 
+        Log.d( ON_BIND_VIEWHOLDER,  "out" );
+
     }
 
-
+    /*
+     *this class counts list so that the appropriate count shows on the screen
+     * */
     @Override
     public int getItemCount() {
+        Log.d( GET_ITEM_COUNT,  "in" );
+
+        Log.d( GET_ITEM_COUNT,  "out" );
+
         return stepsToTakeList.size() + 1;
     }
 
@@ -135,18 +162,10 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return ITEM;
     }
 
-    private void expand(View view) {
-        //set Visible
-        view.setVisibility(View.VISIBLE);
 
-        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        view.measure(widthSpec, heightSpec);
-
-    }
-
-
-
+    /*
+     *this class connects the Id to the views for this file
+     * */
     class IngredientsHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txt_ingredients)
         TextView txt_ingredients;
@@ -163,6 +182,9 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    /*
+     *this class connects the Id to the views for this file
+     * */
     class StepsHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txt_step_no)
         TextView txtStepNo;

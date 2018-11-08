@@ -67,32 +67,32 @@ public class MyInstanceLifetime extends Application {
         Type listType = new TypeToken<ArrayList<Ingredients>>() {
         }.getType();
         String res = gson.toJson(list, listType);
-        SharedPreferences.Editor prefs = context.getSharedPreferences("MakeNBake", 0).edit();
-        prefs.putString("Ingredients", res);
+        SharedPreferences.Editor prefs = context.getSharedPreferences(ConstantsForApp.SHARED_NAME, 0).edit();
+        prefs.putString(ConstantsForApp.INGREDIENTS, res);
         prefs.commit();
     }
 
     public void saveRecipeName(Context context, String name) {
-        SharedPreferences prefs = context.getSharedPreferences("MakeNBake", 0);
-        prefs.edit().putString("Recipe Name", name).commit();
+        SharedPreferences prefs = context.getSharedPreferences(ConstantsForApp.SHARED_NAME, 0);
+        prefs.edit().putString(ConstantsForApp.RECIPE_NAME, name).commit();
     }
 
     public static String getRecipeName(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("makenBake", 0);
-        return prefs.getString("Recipe Name", "not available");
+        SharedPreferences prefs = context.getSharedPreferences(ConstantsForApp.SHARED_NAME, 0);
+        return prefs.getString(ConstantsForApp.RECIPE_NAME, ConstantsForApp.NOT_AVAILABLE);
     }
 
     public List<Ingredients> getIngredients(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("makenBake", 0);
+        SharedPreferences prefs = context.getSharedPreferences(ConstantsForApp.SHARED_NAME, 0);
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Ingredients>>() {
         }.getType();
 
-        String res = prefs.getString("Ingredients", "not available");
-        if (res.equals("not available"))
+        String res = prefs.getString(ConstantsForApp.INGREDIENTS, ConstantsForApp.NOT_AVAILABLE);
+        if (res.equals(ConstantsForApp.NOT_AVAILABLE))
             return new ArrayList<>();
         else
-            return gson.fromJson(prefs.getString("Ingredients", "not available"), listType);
+            return gson.fromJson(prefs.getString(ConstantsForApp.INGREDIENTS, ConstantsForApp.NOT_AVAILABLE), listType);
     }
 
 

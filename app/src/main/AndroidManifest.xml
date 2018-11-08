@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.HomeScreenList"
+        <activity
+            android:name=".Activities.HomeScreenList"
             android:parentActivityName=".Activities.HomeScreenList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,21 +24,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Activities.IngredientsAndSteps"
-            android:parentActivityName=".Activities.HomeScreenList">
-
-        </activity>
+        <activity
+            android:name=".Activities.IngredientsAndSteps"
+            android:parentActivityName=".Activities.HomeScreenList"></activity>
         <activity
             android:name=".Activities.VideoAndInstructions"
             android:parentActivityName=".Activities.IngredientsAndSteps"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="andriod.support.PARENT_ACTIVITY"
-                android:value="com.sofforce.MakeNBake.Activities.IngredientsAndSteps"/>
-
+                android:value="com.sofforce.MakeNBake.Activities.IngredientsAndSteps" />
         </activity>
 
+        <receiver android:name=".bakingWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

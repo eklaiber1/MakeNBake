@@ -39,7 +39,7 @@ public class BitmapAsyncTask extends AsyncTask<File, File, File> {
 
         try {
             // for ImageCache Key on basis of url
-            if (!videoPath.equals("NOT_AVAILABLE")) {
+            if (!videoPath.equals(ConstantsForApp.NOT_AVAILABLE)) {
                 byte[] byteArray = videoPath.getBytes("UTF-8");
                 String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
@@ -72,7 +72,7 @@ public class BitmapAsyncTask extends AsyncTask<File, File, File> {
     protected void onPostExecute(File file) {
         super.onPostExecute(file);
         if (file != null) {
-            Picasso.get().load(file).placeholder(R.drawable.madchel01).into(imageView.get());
+            Picasso.get().load(file).placeholder(R.drawable.videocamera01).into(imageView.get());
         }
     }
 

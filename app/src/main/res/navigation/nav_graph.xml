@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeScreenList">
+
+    <activity
+        android:id="@+id/homeScreenList"
+        android:name="com.sofforce.makenbake.Activities.HomeScreenList"
+        android:label="activity_main_homescreen"
+        tools:layout="@layout/activity_main_homescreen" />
+    <activity
+        android:id="@+id/ingredientsAndSteps"
+        android:name="com.sofforce.makenbake.Activities.IngredientsAndSteps"
+        android:label="activity_ingredients_list"
+        tools:layout="@layout/activity_ingredients_list" />
+    <activity
+        android:id="@+id/videoAndInstructions"
+        android:name="com.sofforce.makenbake.Activities.VideoAndInstructions"
+        android:label="videos_and_instructions"
+        tools:layout="@layout/videos_and_instructions" />
+</navigation>

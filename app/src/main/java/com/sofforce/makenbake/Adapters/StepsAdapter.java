@@ -18,6 +18,7 @@ import com.sofforce.makenbake.Models.Ingredients;
 import com.sofforce.makenbake.Models.StepsToTake;
 import com.sofforce.makenbake.R;
 import com.sofforce.makenbake.Utilities.BitmapAsyncTask;
+import com.sofforce.makenbake.Utilities.ConstantsForApp;
 import com.sofforce.makenbake.Utilities.MyInstanceLifetime;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -125,18 +126,36 @@ public class StepsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             });
 
 
-            Picasso.get().load(stepsToTakeList.get(pos).getThumbnailURL()).placeholder(R.drawable.videocamera01)
-                    .error(R.drawable.videocamera01).into(stepsHolder.img_place_holder, new Callback() {
-                @Override
-                public void onSuccess() {
-                }
 
-                @Override
-                public void onError(Exception e) {
-                    //Thumbnail download of videos and cache it
-                    BitmapAsyncTask.retrieveVideoFrameFromVideo(stepsToTakeList.get(pos).getVideoURL(), stepsHolder.img_place_holder);
-                }
-            });
+            if (stepsToTakeList.get( pos ).getVideoURL().equals( ConstantsForApp.NOT_AVAILABLE )){
+
+                Picasso.get().load( stepsToTakeList.get( pos ).getVideoURL() ).placeholder( R.drawable.sorrynovideo )
+                        .error( R.drawable.sorrynovideo ).into( stepsHolder.img_place_holder, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        //Thumbnail download of videos and cache it
+                        BitmapAsyncTask.retrieveVideoFrameFromVideo( stepsToTakeList.get( pos ).getVideoURL(), stepsHolder.img_place_holder );
+                    }
+                } );
+
+            } else {
+                Picasso.get().load( stepsToTakeList.get( pos ).getVideoURL() ).placeholder( R.drawable.videocamera01 )
+                        .error( R.drawable.videocamera01 ).into( stepsHolder.img_place_holder, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        //Thumbnail download of videos and cache it
+                        BitmapAsyncTask.retrieveVideoFrameFromVideo( stepsToTakeList.get( pos ).getVideoURL(), stepsHolder.img_place_holder );
+                    }
+                } );
+            }
         }
 
         Log.d( ON_BIND_VIEWHOLDER,  "out" );

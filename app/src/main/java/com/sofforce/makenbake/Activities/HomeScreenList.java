@@ -6,8 +6,10 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -31,9 +33,7 @@ import com.sofforce.makenbake.Models.AllRecipesListModel;
 import com.sofforce.makenbake.Models.RecipeInfo;
 import com.sofforce.makenbake.R;
 import com.sofforce.makenbake.Utilities.ConnectionDetector;
-import com.sofforce.makenbake.Utilities.ConstantsForApp;
 import com.sofforce.makenbake.Utilities.MyInstanceLifetime;
-import com.sofforce.makenbake.bakingWidget;
 import com.sofforce.makenbake.database.ApplicationDb;
 
 import org.json.JSONArray;
@@ -79,6 +79,10 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
     private static final String ACTIVITY_ONCHANGED = "ACTIVITY_onChanged";
     private static final String ACTIVITY_ONITEMCLICK = "ACTIVITY_onItemClicked";
 
+    //this is for the shared Preferences that will be passed to the baking widget
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor  mEditor;
+
 
     //this is to check whether there is  a connection to the internet
     ConnectionDetector cd =  new ConnectionDetector(this);
@@ -96,6 +100,9 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
         mContext = this;
         myInstanceLifetime = MyInstanceLifetime.getAppInstance();
         applicationDb = ApplicationDb.getInstance( mContext );
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences( this );
+        mEditor = mPreferences.edit();
 
         textView.setText( R.string.pick_a_choice );
 
@@ -232,13 +239,19 @@ public class HomeScreenList extends AppCompatActivity implements ActivityClickLi
             if (intent.getExtras() != null) {
                 myInstanceLifetime.saveRecipeName( mContext, recipeList.get( pos ).getName() );
                 myInstanceLifetime.saveIngredients( mContext, recipeList.get( pos ).getIngredients() );
-                Intent otherIntent = new Intent( mContext, bakingWidget.class );
-                intent.setAction( ConstantsForApp.ACTION_DATA_UPDATE );
-                intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID,
-                        mAppWidgetId );
-                setResult( RESULT_OK, otherIntent );
-                sendBroadcast( otherIntent );
-                ((AppCompatActivity) mContext).finish();
+//                Intent otherIntent = new Intent( mContext, bakingWidget.class );
+//                intent.setAction( ConstantsForApp.ACTION_DATA_UPDATE );
+//                intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_ID,
+//                        mAppWidgetId );
+//                setResult( RESULT_OK, otherIntent );
+//                sendBroadcast( otherIntent );
+//                ((AppCompatActivity) mContext).finish();
+
+                String recName = recipeList.get( pos ).getName();
+                List recIngre = recipeList.get( pos ).getIngredients();
+                mEditor.putString( "widRecName", recName );
+                mEditor.putString( "widRecIngre", recIngre.toString() );
+                mEditor.apply();
             }
         Log.d( ACTIVITY_ONITEMCLICK,  "activate_onItemClick: out" );
 

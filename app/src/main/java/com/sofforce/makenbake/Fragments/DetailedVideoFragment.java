@@ -29,6 +29,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.sofforce.makenbake.All_interfaces.OnFragmentListener;
 import com.sofforce.makenbake.Models.StepsToTake;
 import com.sofforce.makenbake.R;
+import com.sofforce.makenbake.Utilities.ConstantsForApp;
 import com.sofforce.makenbake.Utilities.MyInstanceLifetime;
 
 import butterknife.BindView;
@@ -98,8 +99,7 @@ public class DetailedVideoFragment extends Fragment {
         txtDesc.setText(stepsModel.getDescription());
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.videocamera01));
 
-        if (stepsModel.getThumbnailURL().equals("NA")
-                &&stepsModel.getVideoURL().equals("NA")) {
+        if (stepsModel.getVideoURL().equals(ConstantsForApp.NOT_AVAILABLE )) {
             img_sad_chef.setVisibility(View.VISIBLE);
             txt_no_video.setVisibility(View.VISIBLE);
         }
@@ -130,6 +130,7 @@ public class DetailedVideoFragment extends Fragment {
 
     private void releasePlayer() {
         if (simpleExoPlayer != null) {
+            simpleExoPlayer.stop();
             simpleExoPlayer.release();
             simpleExoPlayer = null;
         }

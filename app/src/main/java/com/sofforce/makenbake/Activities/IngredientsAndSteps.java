@@ -2,6 +2,7 @@ package com.sofforce.makenbake.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -174,7 +176,6 @@ public class IngredientsAndSteps extends AppCompatActivity implements ActivityCl
     }
 
 
-
     /*
      * this is part of the activity life cycle for when the device is in the background
      * */
@@ -185,6 +186,17 @@ public class IngredientsAndSteps extends AppCompatActivity implements ActivityCl
         super.onPause();
         Log.d( ON_PAUSED,  " out" );
 
+    }
+
+
+    /*
+    * this is for the sharedPreference button that is going to update the widget
+    */
+    public void passIngreToWidget(View view) {
+
+        SharedPreferences shPrefer = getSharedPreferences( "widgetData", Context.MODE_PRIVATE );
+
+        SharedPreferences.Editor editor =  shPrefer.edit();
     }
 
 

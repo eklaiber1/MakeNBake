@@ -2,6 +2,8 @@ package com.sofforce.makenbake.Models;
 
 import android.text.TextUtils;
 
+import com.sofforce.makenbake.Utilities.ConstantsForApp;
+
 public class StepsToTake  {
 
 
@@ -32,8 +34,9 @@ public class StepsToTake  {
     }
 
     public String getVideoURL() {
-        if (TextUtils.isEmpty(videoURL))
-            return "not available";
+        if (TextUtils.isEmpty(videoURL)) {
+            return ConstantsForApp.NOT_AVAILABLE;
+        }
         return videoURL;
     }
 
@@ -42,8 +45,9 @@ public class StepsToTake  {
     }
 
     public String getThumbnailURL() {
-        if (TextUtils.isEmpty(thumbnailURL))
-            return "not available";
+        if (TextUtils.isEmpty(thumbnailURL)) {
+            return ConstantsForApp.NOT_AVAILABLE;
+        }
         return thumbnailURL;
     }
 

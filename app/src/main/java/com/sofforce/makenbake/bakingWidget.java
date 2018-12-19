@@ -6,6 +6,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
 import com.sofforce.makenbake.Activities.HomeScreenList;
@@ -22,18 +24,30 @@ public class bakingWidget extends AppWidgetProvider {
 
     private RemoteViews remoteViews;
 
+    SharedPreferences mPreferences = getActivity().getPreferences( Context.MODE_PRIVATE );
+    SharedPreferences.Editor  mEditor =  mPreferences.edit();
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         for (int appWidgetId : appWidgetIds) {
 
             remoteViews = new RemoteViews( context.getPackageName(), R.layout.baking_widget );
-            appWidgetManager.updateAppWidget( appWidgetId, remoteViews );
-
             Intent intent = new Intent( context, HomeScreenList.class );
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,0);
             remoteViews.setOnClickPendingIntent( R.id.table_image, pendingIntent );
 
+//            List<Ingredients> list = MyInstanceLifetime.getAppInstance().getIngredients(context);
+//            StringBuilder buildString = new StringBuilder();
+//                for (Ingredients model : list) {
+//                    buildString.append(model.getIngredient() + " " + model.getMeasure() + " " + model.getQuantity() + "\n");
+//                }
+//            remoteViews.setTextViewText(R.id.text, buildString.toString());
+                remoteViews.setTextViewText( R.id.name_of_recipe, mPreferences.getString( "widRecName", ""  ) );
+                remoteViews.setTextViewText( R.id.ingredients_list, mPreferences.getString( "widRecIngre", ""  ) );
+
+
+            appWidgetManager.updateAppWidget( appWidgetId, remoteViews );
 
         }
     }
@@ -63,12 +77,12 @@ public class bakingWidget extends AppWidgetProvider {
 
         if (ingredientFeed.equals( AppWidgetManager.ACTION_APPWIDGET_OPTIONS_CHANGED ) ||
                 ingredientFeed.equals( ConstantsForApp.ACTION_DATA_UPDATE )) {
-            remoteViews.setTextViewText( R.id.txt_ingredients, MyInstanceLifetime.getRecipeName( context ) );
+            remoteViews.setTextViewText( R.id.name_of_recipe, MyInstanceLifetime.getRecipeName( context ) );
             List<Ingredients> list =  MyInstanceLifetime.getAppInstance().getIngredients( context );
             StringBuilder buildString = new StringBuilder(  );
             for (Ingredients model : list)
                 buildString.append(model.getIngredient() + " " + model.getMeasure() + " " + model.getQuantity() + "\n");
-            remoteViews.setTextViewText( R.id.text, buildString.toString() );
+            remoteViews.setTextViewText( R.id.ingredients_list, buildString.toString() );
 
 
             AppWidgetManager.getInstance(context).updateAppWidget(
